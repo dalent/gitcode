@@ -1,0 +1,37 @@
+#!/usr/bin/expect  
+#===============================================================================
+#
+#          FILE: login_kill.sh
+# 
+#         USAGE: ./login_kill.sh 
+# 
+#   DESCRIPTION: 
+# 
+#       OPTIONS: ---
+#  REQUIREMENTS: ---
+#          BUGS: ---
+#         NOTES: ---
+#        AUTHOR: YOUR NAME (), 
+#  ORGANIZATION: 
+#       CREATED: 26/01/14 12:18
+#      REVISION:  ---
+#===============================================================================
+set timeout 30
+set program "UMSAccess"
+set user "jujintao"
+set fp [open "ip.list" "r"]
+
+proc kill_pid {ip} {
+	global user program
+ 	spawn ssh $user@$ip
+	send "ps xuf|grep $program|awk '{if(\$7==\"?\") print \$2,\$11}' \r"
+	send "ps xuf|grep $program|awk '{if(\$7==\"?\") print \$2}'|xargs kill \r"
+	sleep 3
+	send "exit"
+}
+ 
+while {[gets $fp line] != -1} {
+	kill_pid $line
+}
+
+ 
