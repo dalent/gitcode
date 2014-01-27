@@ -17,16 +17,23 @@
 #      REVISION:  ---
 #===============================================================================
 set timeout 30
-set program "UMSAccess"
+set program "ums_access"
 set user "jujintao"
-set fp [open "ip.list" "r"]
+set file [lindex $argv 0]
+
+if {"$file" == ""} {
+	spawn echo ./login_kill.expect ip.txt
+	exit 0
+}
+set fp [open $file "r"]
 
 proc kill_pid {ip} {
 	global user program
  	spawn ssh $user@$ip
-	send "ps xuf|grep $program|awk '{if(\$7==\"?\") print \$2,\$11}' \r"
+	send -- "ps xuf|grep $program|awk '{if(\$7==\"?\") print \$2,\$11}' \r"
 	send "ps xuf|grep $program|awk '{if(\$7==\"?\") print \$2}'|xargs kill \r"
 	sleep 3
+	#interact
 	send "exit"
 }
  
