@@ -1,28 +1,26 @@
 #include<stdio.h>
-void insert_sort(int array[], int size)
+void insert(int * array, int n)
 {
-    if(size <= 1)
-        return;
-
-    for(int i =1 ;i < size;i++)
-    {
-        int k = i;
-        int tmp = array[i];
-        while(k > 0 && array[k - 1] > tmp)
-        {
-            array[k] = array[k-1];
-            k--;
-        }
-
-
-        array[k] = tmp;
-    }
+	for(int i = 1; i < n; i++)
+	{
+		int tmp = array[i];
+		int j = i;
+       for(; j > 0;j--)
+	   {
+	   	   if(array[j-1] > tmp)
+	   	   	   array[j] = array[j-1];
+		   else 
+		   	   break;
+	   }
+	   array[j] = tmp; 
+	}
 }
 
-int main()
+int main(int argc , char** argv)
 {
-    int array[10] = {10,9,8,7,6,5,4,3,2,1};
-    insert_sort(array,10);
-    for(int i =0; i < sizeof(array)/sizeof(int); i++)
-        printf("%d\n", array[i]);
+  int array[] = {9,8,7,6,5,4,3,4,2};
+  insert(array, sizeof(array)/sizeof(int));
+  for(int i = 0; i < sizeof(array)/sizeof(int); i ++)
+  	  printf("%d", array[i]);
+  return 0;
 }
